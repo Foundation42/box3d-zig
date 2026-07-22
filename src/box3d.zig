@@ -75,14 +75,17 @@ pub const JointEvents = c.b3JointEvents;
 
 pub const DebugDraw = c.b3DebugDraw;
 
-pub const OverlapResultFcn = c.b3OverlapResultFcn;
-pub const CastResultFcn = c.b3CastResultFcn;
-pub const MoverFilterFcn = c.b3MoverFilterFcn;
-pub const PlaneResultFcn = c.b3PlaneResultFcn;
-pub const CustomFilterFcn = c.b3CustomFilterFcn;
-pub const PreSolveFcn = c.b3PreSolveFcn;
-pub const FrictionCallback = c.b3FrictionCallback;
-pub const RestitutionCallback = c.b3RestitutionCallback;
+// Callback types. translate-c exposes the C typedefs as bare function
+// types; the API takes pointers to them, so alias the nullable-pointer
+// form — pass a Zig `fn (...) callconv(.c) ...` by name, or null.
+pub const OverlapResultFcn = ?*const c.b3OverlapResultFcn;
+pub const CastResultFcn = ?*const c.b3CastResultFcn;
+pub const MoverFilterFcn = ?*const c.b3MoverFilterFcn;
+pub const PlaneResultFcn = ?*const c.b3PlaneResultFcn;
+pub const CustomFilterFcn = ?*const c.b3CustomFilterFcn;
+pub const PreSolveFcn = ?*const c.b3PreSolveFcn;
+pub const FrictionCallback = ?*const c.b3FrictionCallback;
+pub const RestitutionCallback = ?*const c.b3RestitutionCallback;
 
 pub const DistanceJointDef = c.b3DistanceJointDef;
 pub const MotorJointDef = c.b3MotorJointDef;
