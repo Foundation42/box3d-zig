@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    # Weekly run against Box3D main to catch upstream API drift.
+    - cron: "0 6 * * 1"
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout box3d-zig
+        uses: actions/checkout@v4
+        with:
+          path: box3d-zig
+
+      - name: Checkout Box3D
+        uses: actions/checkout@v4
+        with:
+          repository: erincatto/box3d
+          path: box3d
+
+      - name: Install Zig
+        uses: mlugg/setup-zig@v2
+        with:
+          version: 0.14.1
+
+      - name: Check formatting
+        if: runner.os == 'Linux'
+        working-directory: box3d-zig
+        run: zig fmt --check build.zig src examples
+
+      - name: Test (Debug)
+        working-directory: box3d-zig
+        run: zig build test --summary all
+
+      - name: Test (ReleaseFast)
+        working-directory: box3d-zig
+        run: zig build test -Doptimize=ReleaseFast --summary all
+
+      - name: Test (double precision)
+        working-directory: box3d-zig
+        run: zig build test -Ddouble-precision=true --summary all
+
+      - name: Run example
+        working-directory: box3d-zig
+        run: zig build run
