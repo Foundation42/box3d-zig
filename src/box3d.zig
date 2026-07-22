@@ -60,6 +60,9 @@ pub const RayResult = c.b3RayResult;
 pub const WorldCastOutput = c.b3WorldCastOutput;
 pub const BodyCastResult = c.b3BodyCastResult;
 pub const BodyPlaneResult = c.b3BodyPlaneResult;
+pub const PlaneResult = c.b3PlaneResult;
+pub const CollisionPlane = c.b3CollisionPlane;
+pub const PlaneSolverResult = c.b3PlaneSolverResult;
 pub const ContactData = c.b3ContactData;
 pub const TreeStats = c.b3TreeStats;
 pub const Profile = c.b3Profile;
@@ -219,6 +222,12 @@ pub const destroyHeightField = c.b3DestroyHeightField;
 
 pub const createCompound = c.b3CreateCompound;
 pub const destroyCompound = c.b3DestroyCompound;
+
+// Kinematic character-mover helpers. Feed the planes gathered by
+// World.collideMover to solvePlanes, then clip the mover's velocity —
+// see samples/mover.cpp in the Box3D repo for the canonical loop.
+pub const solvePlanes = c.b3SolvePlanes;
+pub const clipVector = c.b3ClipVector;
 
 pub fn getWorldCount() i32 {
     return c.b3GetWorldCount();
